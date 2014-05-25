@@ -5,6 +5,6 @@ uses raw data from One of the most exciting areas in all of data science right n
 and produce two tidy data sets
 
 ######Tidy_Data.txt 
-A 10,299 Obs. & 82 variables of all measurements on the mean and standard deviation for each measurement.
+A 10,299 Obs. & 82 variables of all measurements on the mean and standard deviation for each measurement from the raw data.
 ######AGG_Tidy_Data.txt
-A 180 Obs. & 82 variables for the average of each variable for each activity and each subject.
+A 180 Obs. & 82 variables for the average of each variable for each activity and each subject from the raw data.
