@@ -21,8 +21,7 @@
         features <- read.table(features_Path, header = FALSE, sep = "")
         ##setting the names att for features
         names(features) <- c("col.index", "col.name")
-        ##take a backup from features in to features.old, it will be useful later in creating the CodeBook
-        features.Old <- features
+
 
         ##Transform Non Descriptive Activity Labels into Descriptive Activity Labels
         
@@ -144,10 +143,6 @@
         }
         create_AGG_Tidy_Data()
 
-## compare old Non.Descriptive.Activity.Labels to new Descriptive.Activity.Labels 
-        CodeBook <- merge(features.Old,features,by="col.index")
-        CodeBook <- CodeBook[grepl("AVG", CodeBook[,3]) | grepl("STD", CodeBook[,3]),]
-        names(CodeBook) <- c("Raw.Data.Column.Index", "Non.Descriptive.Activity.Labels", "Descriptive.Activity.Labels")
 
 ##Extract our findings
         write.table(CodeBook, file = "CodeBook.csv", sep = ",",quote = FALSE, row.names = FALSE)
