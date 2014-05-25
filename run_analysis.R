@@ -21,7 +21,8 @@
         features <- read.table(features_Path, header = FALSE, sep = "")
         ##setting the names att for features
         names(features) <- c("col.index", "col.name")
-
+        ##take a backup from features in to features.old, it will be useful later in creating the CodeBook
+        features.Old <- features
 
         ##Transform Non Descriptive Activity Labels into Descriptive Activity Labels
         
@@ -29,23 +30,23 @@
         features$"col.name" <- gsub("std", "STD",features$"col.name")
         features$"col.name" <- gsub("meanFreq", "AVG.Frequency",features$"col.name")
         features$"col.name" <- gsub("mean", "AVG",features$"col.name")
-        features$"col.name" <- gsub("fBodyBodyGyroJerkMag", "Frequency.Body.Body.Gyroscope.Jerk.Magnitude", features$"col.name")
-        features$"col.name" <- gsub("fBodyBodyAccJerkMag", "Frequency.Body.Body.Accelerometer.Jerk.Magnitude", features$"col.name")
-        features$"col.name" <- gsub("fBodyBodyGyroMag", "Frequency.Body.Body.Gyroscope.Magnitude", features$"col.name")
-        features$"col.name" <- gsub("tBodyGyroJerkMag", "Time.Body.Gyroscope.Jerk.Magnitude", features$"col.name")
-        features$"col.name" <- gsub("tBodyAccJerkMag", "Time.Body.Accelerometer.Jerk.Magnitude", features$"col.name")
-        features$"col.name" <- gsub("tGravityAccMag", "Time.Gravity.Accelerometer.Magnitude", features$"col.name")
-        features$"col.name" <- gsub("tBodyGyroJerk", "Time.Body.Gyroscope.Jerk", features$"col.name")
-        features$"col.name" <- gsub("fBodyAccJerk", "Frequency.Body.Accelerometer.Jerk", features$"col.name")
-        features$"col.name" <- gsub("tBodyAccJerk", "Time.Body.Accelerometer.Jerk", features$"col.name")
-        features$"col.name" <- gsub("tBodyGyroMag", "Time.Body.Gyroscope.Magnitude", features$"col.name")
-        features$"col.name" <- gsub("fBodyAccMag", "Frequency.Body.Accelerometer.Magnitude", features$"col.name")
-        features$"col.name" <- gsub("tBodyAccMag", "Time.Body.Accelerometer.Magnitude", features$"col.name")
-        features$"col.name" <- gsub("tGravityAcc", "Time.Gravity.Accelerometer", features$"col.name")
-        features$"col.name" <- gsub("fBodyGyro", "Frequency.Body.Gyroscope", features$"col.name")
-        features$"col.name" <- gsub("tBodyGyro", "Time.Body.Gyroscope", features$"col.name")
-        features$"col.name" <- gsub("fBodyAcc", "Frequency.Body.Accelerometer", features$"col.name")
-        features$"col.name" <- gsub("tBodyAcc", "Time.Body.Accelerometer", features$"col.name")
+        features$"col.name" <- gsub("fBodyBodyGyroJerkMag", "Frequency.Body.Body.AVelocity.Jerk.Magnitude", features$"col.name")
+        features$"col.name" <- gsub("fBodyBodyAccJerkMag", "Frequency.Body.Body.Acceleration.Jerk.Magnitude", features$"col.name")
+        features$"col.name" <- gsub("fBodyBodyGyroMag", "Frequency.Body.Body.AVelocity.Magnitude", features$"col.name")
+        features$"col.name" <- gsub("tBodyGyroJerkMag", "Time.Body.AVelocity.Jerk.Magnitude", features$"col.name")
+        features$"col.name" <- gsub("tBodyAccJerkMag", "Time.Body.Acceleration.Jerk.Magnitude", features$"col.name")
+        features$"col.name" <- gsub("tGravityAccMag", "Time.Gravity.Acceleration.Magnitude", features$"col.name")
+        features$"col.name" <- gsub("tBodyGyroJerk", "Time.Body.AVelocity.Jerk", features$"col.name")
+        features$"col.name" <- gsub("fBodyAccJerk", "Frequency.Body.Acceleration.Jerk", features$"col.name")
+        features$"col.name" <- gsub("tBodyAccJerk", "Time.Body.Acceleration.Jerk", features$"col.name")
+        features$"col.name" <- gsub("tBodyGyroMag", "Time.Body.AVelocity.Magnitude", features$"col.name")
+        features$"col.name" <- gsub("fBodyAccMag", "Frequency.Body.Acceleration.Magnitude", features$"col.name")
+        features$"col.name" <- gsub("tBodyAccMag", "Time.Body.Acceleration.Magnitude", features$"col.name")
+        features$"col.name" <- gsub("tGravityAcc", "Time.Gravity.Acceleration", features$"col.name")
+        features$"col.name" <- gsub("fBodyGyro", "Frequency.Body.AVelocity", features$"col.name")
+        features$"col.name" <- gsub("tBodyGyro", "Time.Body.AVelocity", features$"col.name")
+        features$"col.name" <- gsub("fBodyAcc", "Frequency.Body.Acceleration", features$"col.name")
+        features$"col.name" <- gsub("tBodyAcc", "Time.Body.Acceleration", features$"col.name")
         features$"col.name" <- gsub("-", ".",features$"col.name")
 
 
@@ -143,7 +144,12 @@
         }
         create_AGG_Tidy_Data()
 
+## compare old Non.Descriptive.Activity.Labels to new Descriptive.Activity.Labels 
+        CodeBook <- merge(features.Old,features,by="col.index")
+        CodeBook <- CodeBook[grepl("AVG", CodeBook[,3]) | grepl("STD", CodeBook[,3]),]
+        names(CodeBook) <- c("Raw.Data.Column.Index", "Non.Descriptive.Activity.Labels", "Descriptive.Activity.Labels")
 
 ##Extract our findings
-        write.table(Tidy_Data, file = "Tidy_Data.txt", sep = ",",quote = FALSE, row.names = FALSE)
-        write.table(AGG_Tidy_Data, file = "AGG_Tidy_Data.txt", sep = ",",quote = FALSE, row.names = FALSE)
+        write.table(CodeBook, file = "CodeBook.csv", sep = ",",quote = FALSE, row.names = FALSE)
+        write.table(Tidy_Data, file = "Tidy_Data.csv", sep = ",",quote = FALSE, row.names = FALSE)
+        write.table(AGG_Tidy_Data, file = "AGG_Tidy_Data.csv", sep = ",",quote = FALSE, row.names = FALSE)
